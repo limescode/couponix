@@ -1,0 +1,215 @@
+{
+  "info": {
+    "_postman_id": "7d3d6bc8-4a4e-4a77-8f1f-2cfdc0d7d001",
+    "name": "Couponix",
+    "description": "Postman collection for testing Couponix coupon flow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "couponCode",
+      "value": "WIOSNA2026"
+    },
+    {
+      "key": "userId",
+      "value": "jan"
+    },
+    {
+      "key": "secondUserId",
+      "value": "janina"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Create coupon",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{couponCode}}\",\n  \"maxUsages\": 2,\n  \"countryCode\": \"PL\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. Use coupon - first user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Forwarded-For",
+            "value": "127.0.0.1"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{couponCode}}\",\n  \"userId\": \"{{userId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons/use",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons",
+            "use"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. Use coupon again - same user (should fail)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Forwarded-For",
+            "value": "127.0.0.1"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{couponCode}}\",\n  \"userId\": \"{{userId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons/use",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons",
+            "use"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. Use coupon - second user",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Forwarded-For",
+            "value": "127.0.0.1"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{couponCode}}\",\n  \"userId\": \"{{secondUserId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons/use",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons",
+            "use"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. Use coupon - limit exceeded (should fail)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Forwarded-For",
+            "value": "127.0.0.1"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{couponCode}}\",\n  \"userId\": \"bartek\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons/use",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons",
+            "use"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. Use non-existing coupon (should fail)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Forwarded-For",
+            "value": "127.0.0.1"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"NIEISTNIEJACY999\",\n  \"userId\": \"ghostuser\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/coupons/use",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "coupons",
+            "use"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

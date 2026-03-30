@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: couponix-postgres
+    environment:
+      POSTGRES_DB: couponix
+      POSTGRES_USER: couponix
+      POSTGRES_PASSWORD: couponix
+    ports:
+      - "5432:5432"
+    volumes:
+      - couponix_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  couponix_postgres_data:
